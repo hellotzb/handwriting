@@ -1,0 +1,13 @@
+node_modules/
+package-lock.json
+yarn.lock
+.DS_Store
+.vscode
+*.sw*
+*.un~
+typings/
+
+
+jsonp.js
+Promise.js
+ajax.js
