@@ -1,9 +1,11 @@
 import { Component, forwardRef, useImperativeHandle } from 'react';
 import { useForm } from '@/hooks';
-import FormContext from '@/context/FormContext';
+import FormContext from '@/components/Form/FormContext';
 import { FormItem } from './components/FormItem';
 import Input from './components/Input';
 import Select from './components/Select';
+
+import './index.less';
 
 class Form extends Component<any> {
   render() {
