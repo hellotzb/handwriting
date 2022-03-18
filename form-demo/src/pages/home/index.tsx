@@ -1,7 +1,6 @@
-import { useRef } from 'react';
+import { useMemo, useRef, useState } from 'react';
 import Form, { FormItem, Input, Select } from '@/components/Form';
 import Modal from '@/components/Modal';
-import './index.less';
 
 export default function IndexPage() {
   const form = useRef<any>(null);
@@ -14,7 +13,20 @@ export default function IndexPage() {
     console.log('form.current ', form.current);
   };
 
-  const handleModalClick = () => {
+  const [visible, setVisible] = useState(false);
+  /* 使用 useMemo 防止 Model 的 PureComponent 失去作用 */
+  const [handleClose, handleOk, handleCancel] = useMemo(() => {
+    const Ok = () => console.log('点击确定按钮');
+    const Close = () => setVisible(false);
+    const Cancel = () => console.log('点击取消按钮');
+    return [Close, Ok, Cancel];
+  }, []);
+  // 挂载弹窗组件点击事件
+  const handleModalClick1 = () => {
+    setVisible(!visible);
+  };
+  // 静态属性点击事件
+  const handleModalClick2 = () => {
     Modal.show({
       content: <p>确定购买《React进阶指南小册》吗</p>,
       title: '《React进阶实践指南》',
@@ -27,9 +39,26 @@ export default function IndexPage() {
   return (
     <div>
       <div className="custom_modal">
-        <button onClick={handleModalClick}>静态方式调用，显示modal</button>
+        <h2>自定义弹窗</h2>
+        {/* 1.0 挂载组件 */}
+        <Modal
+          onCancel={handleCancel}
+          onClose={handleClose}
+          onOk={handleOk}
+          title={'《React进阶实践指南》'}
+          visible={visible}
+          width={700}
+        >
+          <div className="feel">
+            小册阅读感受： <input placeholder="写下你的感受" />
+          </div>
+        </Modal>
+        <button onClick={handleModalClick1}> model show </button>
+        {/* 2.0 静态属性 */}
+        <button onClick={handleModalClick2}>静态方式调用，显示modal</button>
       </div>
       <div className="form_container">
+        <h2>表单验证</h2>
         <Form initialValues={{ author: '我不是外星人' }} ref={form}>
           <FormItem
             label="请输入小册名称"

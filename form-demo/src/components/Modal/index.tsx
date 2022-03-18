@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import ReactDOM from 'react-dom';
 import Dialog from './components/Dialog';
+
+import './index.less';
 // 需要把弹窗组件渲染到挂载的容器之外，这样不受到父组件的影响。这里可以通过 ReactDOM.createPortal API解决这个问题。
 // ReactDOM.createPortal(child, container);
 let ModalContainer: any = null;
