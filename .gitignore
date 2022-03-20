@@ -6,8 +6,3 @@ yarn.lock
 *.sw*
 *.un~
 typings/
-
-
-jsonp.js
-Promise.js
-ajax.js

@@ -17,6 +17,7 @@ const deepClone = target => {
 
 // WeakMap 对象是一组键/值对的集合，其中的键是弱引用的。其键必须是对象，而值可以是任意的。
 // 弱引用: 在计算机程序设计中，弱引用与强引用相对，是指不能确保其引用的对象不会被垃圾回收器回收的引用。一个对象若只被弱引用所引用，则被认为是不可访问（或弱可访问）的，并因此可能在任何时刻被回收。
+// 使用WeakMap解决循环引用栈溢出问题
 // 2.0
 const deepClone1 = (target, map = new WeakMap()) => {
   if (typeof target === 'object') {
