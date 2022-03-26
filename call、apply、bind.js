@@ -34,7 +34,7 @@ Function.prototype.myApply = function (context, args) {
   }
   // 不传参默认为 window
   let ctx = context || window;
-  ctx.fn = this; // this 指向调用myCall的function(test)
+  ctx.fn = this; // this 指向调用myCall的function - test
   let result = ctx.fn(...args); //调用函数
   delete ctx.fn; //删除context的函数属性
   return result;
@@ -42,17 +42,30 @@ Function.prototype.myApply = function (context, args) {
 
 // bind
 Function.prototype.myBind = function (context, ...args1) {
-  // 使用[闭包+apply]实现
-  return (...args2) => this.apply(context, [...args1, ...args2]);
+  if (typeof this !== 'function') {
+    throw new TypeError('Error');
+  }
+  let self = this;
+  const boundFn = function (...args2) {
+    return self.apply(this instanceof boundFn ? this : context, [
+      ...args1,
+      ...args2,
+    ]);
+  };
+  // 修改返回函数的 prototype 为绑定函数的 prototype，实例就可以继承绑定函数的原型中的值
+  boundFn.prototype = Object.create(this.prototype);
+  // 必须设置回正确的构造函数，要不然在会发生判断类型出错
+  boundFn.prototype.constructor = boundFn;
+  return boundFn;
 };
-
-function test(age, age2, age3) {
-  console.log(this.name + ' ' + age + age2 + age3);
-}
 
 var obj = {
   name: 'zhangsan',
 };
+
+function test(age, age2, age3) {
+  console.log(this.name + ',' + age + age2 + age3);
+}
 
 test.myCall(obj, 22);
 test.myApply(obj, [22, 33, 44]);

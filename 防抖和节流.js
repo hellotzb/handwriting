@@ -6,11 +6,11 @@ const print = () => {
 // input
 const debounce = (func, wait) => {
   let timer = null;
-  return function () {
+  return function (...arg) {
     let context = this;
     timer && clearTimeout(timer);
     timer = setTimeout(() => {
-      func.apply(context);
+      func.apply(context, arg);
     }, wait);
   };
 };

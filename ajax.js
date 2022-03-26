@@ -5,6 +5,14 @@
  * 4. 监听状态的变化 -> xhr.onreadystatechange()
  */
 
+/** readyState
+ * 0：未初始化 -- 尚未调用.open()方法；
+ * 1：启动 -- 已经调用open()方法，但尚未调用.send()方法；
+ * 2：发送 -- 已经调用send()方法，但尚未接收到响应；
+ * 3：接收 -- 已经接收到部分响应数据；
+ * 4：完成 -- 已经接收到全部响应数据，而且已经可以在客户端使用了；
+ */
+
 // obj -> string
 const objToString = data => {
   data.t = new Date().getTime();
@@ -49,6 +57,7 @@ function ajax(option) {
   xhr.onreadystatechange = function () {
     clearInterval(timer);
     if (xhr.readyState === 4) {
+      // xhr.status 获取http状态码
       if ((xhr.status >= 200 && xhr.status < 300) || xhr.status == 304) {
         //  5.处理返回的结果；
         option.success(xhr); //成功后回调；
