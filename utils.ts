@@ -2,6 +2,15 @@ interface AnyObject extends Object {
   [propName: string]: any;
 }
 
+export const flexFit = (arr, rowNum) => {
+  return arr?.length % rowNum === 0
+    ? null
+    : new Array(rowNum - (arr?.length % rowNum)).fill(0).map((_, index) => {
+        // <div className='lottery-item' key={`empty_${index}`}></div>
+        return null;
+      });
+};
+
 interface FormatDateTimeOption extends Intl.DateTimeFormatOptions {
   isSecond: boolean;
   isHour: boolean;
