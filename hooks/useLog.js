@@ -9,7 +9,7 @@ export default function useLog() {
 
   /* 分清依赖关系 -> message 改变，   */
   const reportMessage = React.useCallback(
-    function (data, type) {
+    (data, type) => {
       if (type === 'pv') {
         // pv 上报
         console.log('组件 pv 上报', message);
