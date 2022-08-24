@@ -1,6 +1,7 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
 const webpack = require('webpack');
 
 module.exports = {
@@ -43,7 +44,7 @@ module.exports = {
       {
         test: /\.(css|sass)$/,
         use: [
-          'style-loader',
+          'style-loader', // 通过注入 < style > 标记将 CSS 添加到 DOM
           {
             loader: 'css-loader',
             options: {
@@ -131,6 +132,11 @@ module.exports = {
   // 优化
   optimization: {
     usedExports: true, // 开启Tree Shaking，production 模式下默认开启
+    minimizer: [
+      // 在 webpack@5 中，你可以使用 `...` 语法来扩展现有的 minimizer（即 `terser-webpack-plugin`），将下一行取消注释
+      `...`,
+      new CssMinimizerPlugin(),
+    ],
   },
   // 设置模块如何被解析
   resolve: {

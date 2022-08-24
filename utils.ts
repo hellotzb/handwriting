@@ -2,6 +2,7 @@ interface AnyObject extends Object {
   [propName: string]: any;
 }
 
+// flex布局，最后一行填满item
 export const flexFit = (arr, rowNum) => {
   return arr?.length % rowNum === 0
     ? null
