@@ -185,3 +185,20 @@ const queryParams = new URLSearchParams(queryString);
 // 把键值对列表转换为一个对象。
 const paramObj = Object.fromEntries(queryParams);
 console.log(paramObj); // { name: 'jimmy', age: '18', height: '1.88' }
+
+/**
+ * 
+ * @param start 开始时间(时间戳)
+ * @param end 结束时间(时间戳)
+ * @param callback 回调
+ * 执行回调条件:
+ * 1. 当前时间大于开始时间 && 没有传入结束时间
+ * 2. 当前时间大于开始时间 && 传入了结束时间 && 当前时间小于结束时间
+ */
+export const execByTime = (start, end, callback) => {
+  if (Date.now() >= Number(start)) {
+    if (!(end && Date.now() >= Number(end))) {
+      callback?.()
+    }
+  }
+}
