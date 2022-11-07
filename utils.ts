@@ -64,9 +64,9 @@ export interface IGroup<T = any> extends AnyObject {
   groups: T[];
 }
 // 泛型T为需要分组的arr项的类型，默认为AnyObject
-type IGrouping = <T extends AnyObject>(arr: T[], id: string) => IGroup<T>[];
+type IGrouping1 = <T extends AnyObject>(arr: T[], id: string) => IGroup<T>[];
 // 根据id为arr分组
-export const grouping: IGrouping = (arr, id) => {
+export const grouping1: IGrouping1 = (arr, id) => {
   if (!Array.isArray(arr)) return [];
   const checkList: number[] = []; // 存放唯一id
 
@@ -81,6 +81,42 @@ export const grouping: IGrouping = (arr, id) => {
         groups: [{ ...item }],
       };
       checkList.push(item[id]);
+      acc.push(newObj);
+    }
+    return acc;
+  }, []);
+};
+
+export interface IGroup<T = any> extends AnyObject {
+  groups: T[];
+}
+// 泛型T为需要分组的arr项的类型，默认为AnyObject
+type IGrouping2 = <T extends AnyObject>(arr: T[], ids: string[]) => IGroup<T>[];
+// 根据ids为arr分组，ids需要传递一个数组，支持根据多个key进行分组，判断分组key的值需要是基本数据类型！
+export const grouping2: IGrouping2 = (arr, ids = []) => {
+  if (!Array.isArray(arr)) return [];
+  const checkList: string[] = []; // 存放唯一id
+
+  return arr.reduce<IGroup[]>((acc, item) => {
+    // 分组对象的唯一id
+    const uniqueId = ids.reduce((str, id) => str + item[id], '');
+    // 如果数组项不包含id的key则过滤掉该数组项
+    const isSkip = !ids.every(id =>
+      Object.prototype.hasOwnProperty.call(item, id)
+    );
+    if (isSkip) return acc;
+    if (checkList.includes(uniqueId)) {
+      const idx = checkList.indexOf(uniqueId);
+      acc[idx].groups.push({ ...item });
+    } else {
+      const newObj = ids.reduce<IGroup>(
+        (obj, id) => {
+          obj[id] = item[id];
+          return obj;
+        },
+        { groups: [{ ...item }] }
+      );
+      checkList.push(uniqueId);
       acc.push(newObj);
     }
     return acc;
@@ -112,6 +148,7 @@ export const formatTimeInHour = (time: string) => {
 };
 
 const appendUrlParam = (url, key, val) => {
+  // Bug: 字符匹配问题，appendUrlParam(url, { prop_type: 2, type: 1 })会导致只匹配prop_type且值为1
   if (url.indexOf(key) > -1) {
     return url.replace(new RegExp(`(${key})=([^&]*)`), `$1=${val}`);
   }
