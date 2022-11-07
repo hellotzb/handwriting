@@ -20,7 +20,7 @@ Function.prototype.myCall = function (context, ...args) {
   }
   // 不传参默认为 window
   let ctx = context || window;
-  ctx.fn = this; // this 指向调用myCall的function(test)
+  ctx.fn = this; // this 指向调用myCall的function - test, 建议属性名使用Symbol()生成独一无二的键
 
   let result = ctx.fn(...args);
   delete ctx.fn;
@@ -34,7 +34,7 @@ Function.prototype.myApply = function (context, args) {
   }
   // 不传参默认为 window
   let ctx = context || window;
-  ctx.fn = this; // this 指向调用myCall的function - test
+  ctx.fn = this; // this 指向调用myCall的function - test, 建议属性名使用Symbol()生成独一无二的键
   let result = ctx.fn(...args); //调用函数
   delete ctx.fn; //删除context的函数属性
   return result;
